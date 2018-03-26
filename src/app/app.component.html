@@ -1,9 +1,15 @@
 <div style="display: flex">
 
   <div>
+      Username<input [(ngModel)]="email" type="text" class="form-control"/>
+      Password<input [(ngModel)]="pwd" type="text" class="form-control"/>
+      <button class="btn btn-primary" (click)="register()">Register</button>
+  </div>
+
+  <div>
     <h3>Auth</h3>
     <div *ngIf="afAuth.authState | async as user; else showLogin">
-      <h4>Hello {{ user.displayName }}!</h1>
+      <h4>Hello {{ user.displayName }}!</h4>
       <button class="btn btn-primary" (click)="logout()">Logout</button>
     </div>
     <ng-template #showLogin>

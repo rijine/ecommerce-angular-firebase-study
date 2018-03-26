@@ -11,6 +11,8 @@ import * as firebase from 'firebase/app';
 })
 export class AppComponent {
   title = 'app';
+  email = '';
+  pwd = '';
 
   items: Observable<any[]>;
 
@@ -20,12 +22,21 @@ export class AppComponent {
     this.items = db.collection('categories').valueChanges();
   }
 
+  register() {
+    this.afAuth.auth
+      .createUserWithEmailAndPassword(this.email, this.pwd)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   login() {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
   logout() {
     this.afAuth.auth.signOut();
   }
-
-
 }
