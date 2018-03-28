@@ -1,60 +1,17 @@
-<div>
-
-  <div>
-    Username
-    <input [(ngModel)]="email" type="text" class="form-control" /> Password
-    <input [(ngModel)]="pwd" type="text" class="form-control" />
-    <button class="btn btn-primary" (click)="register()">Register</button>
-  </div>
-  <hr/>
-
-  <div>
-    Add Product
-    <button class="btn btn-primary" (click)="addProduct()">Add Product</button>
-  </div>
-  <hr/>
-
-  <div>
-    <h3>Auth</h3>
-    <div *ngIf="afAuth.authState | async as user; else showLogin">
-      <h4>Hello {{ user.displayName }}!</h4>
-      <button class="btn btn-primary" (click)="logout()">Logout</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Demo App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link" routerLinkActive="active" routerLink="/search">Query & Pagination</a>
+      <a class="nav-item nav-link" routerLinkActive="active" routerLink="/auth">Register & Auth</a>
+      <a class="nav-item nav-link" routerLinkActive="active" routerLink="/save">Save & Update</a>
+      <a class="nav-item nav-link" routerLinkActive="active" routerLink="/uploads">Uploads</a>
+      <a class="nav-item nav-link" routerLinkActive="active" routerLink="/security">Security & Rules</a>
     </div>
-    <ng-template #showLogin>
-      <p>Please login.</p>
-      <button class="btn btn-primary" (click)="login()">Login with Google</button>
-    </ng-template>
   </div>
-
-  <div>
-    <h3>Fetching categories</h3>
-    <ul>
-      <li class="text" *ngFor="let item of items | async">
-        {{item.category}} {{item.subCategory}}
-      </li>
-    </ul>
-  </div>
-
-  <div>
-    <h3>Filtering</h3>
-    <select>
-      <option>name</option>
-      <option>Title</option>
-      <option>Desc</option>
-      <option>Id</option>
-    </select>
-    <input type="text" [(ngModel)]="filterField"/>
-    <ul>
-      <li class="text" *ngFor="let item of prodcutList | async">
-        {{item.name}} | {{item.category}} | {{item.subCategory}} | {{item.item}}
-      </li>
-    </ul>
-
-    <button class="btn btn-primary" (click)="search1()">Search 1</button>
-    <button class="btn btn-primary" (click)="search2()">Search 2</button>
-    <button class="btn btn-primary" (click)="search1()">Search 3</button>
-    <button class="btn btn-primary" (click)="search1()">Search 4</button>
-    <button class="btn btn-primary" (click)="search1()">Search 5</button>
-  </div>
-</div>
+</nav>
 <router-outlet></router-outlet>

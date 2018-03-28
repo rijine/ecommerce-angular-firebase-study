@@ -10,7 +10,7 @@ export const environment = {
     authDomain: 'ecommerce-angular-firebase.firebaseapp.com',
     databaseURL: 'https://ecommerce-angular-firebase.firebaseio.com',
     projectId: 'ecommerce-angular-firebase',
-    storageBucket: '',
+    storageBucket: 'ecommerce-angular-firebase.appspot.com',
     messagingSenderId: '739633781630'
   }
 };

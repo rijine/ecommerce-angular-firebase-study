@@ -9,6 +9,13 @@
         { "fieldPath": "item", "mode": "ASCENDING" },
         { "fieldPath": "exporterId", "mode": "ASCENDING" }
       ]
+    },
+    {
+      "collectionId": "users",
+      "fields": [
+        { "fieldPath": "name", "mode": "ASCENDING" },
+        { "fieldPath": "category", "mode": "ASCENDING" }
+      ]
     }
   ]
 }

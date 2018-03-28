@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection
@@ -9,11 +9,12 @@ import * as firebase from 'firebase/app';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-security',
+  templateUrl: './security.component.html',
+  styleUrls: ['./security.component.scss']
 })
-export class AppComponent {
-  title = 'app';
+export class SecurityComponent implements OnInit {
   constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) {}
+
+  ngOnInit() {}
 }

@@ -1,0 +1,10 @@
+<div>
+  <h3>File Upload</h3>
+  <input type="file" (change)="uploadFile($event)" />
+</div>
+<div>
+  {{uploadPercent | async}}
+</div>
+<div>
+  {{downloadURL | async}}
+</div>

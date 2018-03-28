@@ -1,0 +1,32 @@
+<div>
+  <h3>Fetching categories</h3>
+  <ul>
+    <li class="text" *ngFor="let item of items | async">
+      {{item.category}} {{item.subCategory}}
+    </li>
+  </ul>
+</div>
+
+<div>
+  <h3>Filtering</h3>
+  <div class="input-group mb-3">
+    <select class="custom-select">
+      <option>name</option>
+      <option>Title</option>
+      <option>Desc</option>
+      <option>Id</option>
+    </select>
+    <input type="text" class="form-control" [(ngModel)]="filterField" placeholder="Filter"/>
+  </div>
+
+
+  <ul>
+    <li class="text" *ngFor="let item of prodcutList | async">
+      {{item.name}} | {{item.category}} | {{item.subCategory}} | {{item.item}}
+    </li>
+  </ul>
+  <button class="btn btn-primary" (click)="search1()">Search 1</button>
+  <button class="btn btn-primary" (click)="search2()">Search 2</button>
+  <button class="btn btn-primary" (click)="search3()">Search 3</button>
+  <button class="btn btn-primary" (click)="search1()">Search 4</button>
+  <button class="btn btn-primary" (click)="search1()">Search 5</button>

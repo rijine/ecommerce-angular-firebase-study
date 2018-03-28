@@ -9,8 +9,9 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read: if requesta.auth.uid == $userId;
-      allow write: if requesta.auth.uid == $userId;
+      // allow read: if requesta.auth.uid == $userId;
+      // allow write: if requesta.auth.uid == $userId;
+      allow read, write: if true;
     }
     match /categories/{id} {
       allow read: if true;
