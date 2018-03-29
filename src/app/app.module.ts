@@ -11,14 +11,12 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
-
 import { environment } from '../environments/environment';
 import { AuthComponent } from './containers/auth/auth.component';
 import { SearchComponent } from './containers/search/search.component';
 import { UploadsComponent } from './containers/uploads/uploads.component';
 import { SecurityComponent } from './containers/security/security.component';
 import { SaveComponent } from './containers/save/save.component';
-
 
 @NgModule({
   declarations: [
@@ -41,4 +39,4 @@ import { SaveComponent } from './containers/save/save.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

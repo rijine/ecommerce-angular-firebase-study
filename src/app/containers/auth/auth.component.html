@@ -11,10 +11,19 @@
 </div>
 
 <div>
+  <h3>Phone number</h3>
+  Phone
+  <input [(ngModel)]="phone" type="text" class="form-control" />
+  <div id="phone-sign-in-recaptcha"></div>
+  <button class="btn btn-primary" (click)="phoneNumberVerification()">Send Verification</button>
+  <input [(ngModel)]="codeConfirm" type="text" class="form-control" />
+  <button class="btn btn-primary" (click)="confirmPhoneNumber()">Confirm</button>
+</div>
+<hr/>
+<div>
   <h3>Register</h3>
   Username
   <input [(ngModel)]="email" type="text" class="form-control" /> Password
   <input [(ngModel)]="pwd" type="text" class="form-control" />
   <button class="btn btn-primary" (click)="register()">Register</button>
 </div>
-<hr/>
