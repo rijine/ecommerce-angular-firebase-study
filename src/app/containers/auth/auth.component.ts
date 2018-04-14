@@ -20,10 +20,14 @@ export class AuthComponent implements OnInit {
   codeConfirm = '';
   recaptchaVerifier: firebase.auth.RecaptchaVerifier;
   confirmationResult;
+  registrations: any;
+  email1 = '';
+  pwd1 = '';
 
   constructor(private db: AngularFirestore, public afAuth: AngularFireAuth) {}
 
   ngOnInit() {
+    this.registrations = this.db.collection('registrations');
     this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
       'phone-sign-in-recaptcha'
     );
@@ -103,6 +107,12 @@ export class AuthComponent implements OnInit {
       .catch(err => {
         console.log(err);
       });
+  }
+
+  register2() {
+    // this.registrations.add({email: this.email1, password: this.pwd1});
+    this.db.doc('registrations/' + this.email1).set({pwd: this.pwd1});
+
   }
 
   login() {

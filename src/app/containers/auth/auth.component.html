@@ -1,4 +1,12 @@
 <div>
+  <h3>Register 2</h3>
+  Username
+  <input [(ngModel)]="email1" type="text" class="form-control" /> Password
+  <input [(ngModel)]="pwd1" type="text" class="form-control" />
+  <button class="btn btn-primary" (click)="register2()">Register Unknown</button>
+</div>
+
+<div>
   <h3>Auth</h3>
   <div *ngIf="afAuth.authState | async as user; else showLogin">
     <h4>Hello {{ user.displayName }}!</h4>

@@ -95,9 +95,7 @@ export class SearchComponent implements OnInit {
     const queryObservable = query$.switchMap(() =>
       this.db
         .collection('products', ref =>
-          ref
-            .orderBy('name')
-            .startAt(this.filterField)
+          ref.orderBy('name').startAt(this.filterField)
         )
         .valueChanges()
     );
@@ -114,9 +112,25 @@ export class SearchComponent implements OnInit {
     const queryObservable = query$.switchMap(() =>
       this.db
         .collection('users', ref =>
-          ref
-            .orderBy('item')
-            .startAt(this.filterField)
+          ref.orderBy('item').startAt(this.filterField)
+        )
+        .valueChanges()
+    );
+
+    queryObservable.subscribe(items => {
+      console.log(items);
+    });
+
+    query$.next();
+  }
+
+  searchStories() {
+    const query$ = new Subject();
+    const queryObservable = query$.switchMap(() =>
+      this.db
+        .collection('stories', ref =>
+          // ref.where('status', '>=', 1) // error due to rules
+          ref.where('status', '>=', 2)
         )
         .valueChanges()
     );
