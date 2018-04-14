@@ -23,6 +23,7 @@ export class AuthComponent implements OnInit {
   registrations: any;
   email1 = '';
   pwd1 = '';
+  actionvationCode = '';
 
   constructor(private db: AngularFirestore, public afAuth: AngularFireAuth) {}
 
@@ -109,11 +110,19 @@ export class AuthComponent implements OnInit {
       });
   }
 
+  activate() {
+    this.db.doc('activations/' + this.email1).set({code: this.actionvationCode, status: 2});
+  }
+
   register2() {
     // this.registrations.add({email: this.email1, password: this.pwd1});
     this.db.doc('registrations/' + this.email1).set({pwd: this.pwd1});
-
   }
+
+  loginWithPassword() {
+    this.afAuth.auth.signInWithEmailAndPassword(this.email1, this.pwd1);
+  }
+
 
   login() {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());

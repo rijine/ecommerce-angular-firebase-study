@@ -1,37 +1,46 @@
-<div>
-  <h3>Register 2</h3>
-  Username
-  <input [(ngModel)]="email1" type="text" class="form-control" /> Password
-  <input [(ngModel)]="pwd1" type="text" class="form-control" />
-  <button class="btn btn-primary" (click)="register2()">Register Unknown</button>
-</div>
-
-<div>
-  <h3>Auth</h3>
-  <div *ngIf="afAuth.authState | async as user; else showLogin">
-    <h4>Hello {{ user.displayName }}!</h4>
-    <button class="btn btn-primary" (click)="logout()">Logout</button>
+<div style="display: flex; justify-content: space-evenly">
+  <div>
+    <h3>Register With Activation Email</h3>
+    Username
+    <input [(ngModel)]="email1" type="text" class="form-control" /> Password
+    <input [(ngModel)]="pwd1" type="text" class="form-control" />
+    <button class="btn btn-primary" (click)="register2()">Register with Email</button>
+    <button class="btn btn-primary" (click)="loginWithPassword()">Login??</button>
   </div>
-  <ng-template #showLogin>
-    <p>Please login.</p>
-    <button class="btn btn-primary" (click)="login()">Login with Google</button>
-  </ng-template>
+  <div>
+    <input [(ngModel)]="actionvationCode" type="text" class="form-control" />
+    <button class="btn btn-primary" (click)="activate()">Activate</button>
+  </div>
+  <div>
+    <h3>Register With Email</h3>
+    Username
+    <input [(ngModel)]="email" type="text" class="form-control" /> Password
+    <input [(ngModel)]="pwd" type="text" class="form-control" />
+    <button class="btn btn-primary" (click)="register()">Register</button>
+  </div>
 </div>
+<hr />
+<div style="display: flex; justify-content: space-evenly">
+  <div>
+    <h3>Auth/Login</h3>
+    <div *ngIf="afAuth.authState | async as user; else showLogin">
+      <h4>Hello {{ user.displayName }}!</h4>
+      <button class="btn btn-primary" (click)="logout()">Logout</button>
+    </div>
+    <ng-template #showLogin>
+      <p>Please login.</p>
+      <button class="btn btn-primary" (click)="login()">Login with Google</button>
+    </ng-template>
+  </div>
 
-<div>
-  <h3>Phone number</h3>
-  Phone
-  <input [(ngModel)]="phone" type="text" class="form-control" />
-  <div id="phone-sign-in-recaptcha"></div>
-  <button class="btn btn-primary" (click)="phoneNumberVerification()">Send Verification</button>
-  <input [(ngModel)]="codeConfirm" type="text" class="form-control" />
-  <button class="btn btn-primary" (click)="confirmPhoneNumber()">Confirm</button>
+  <div>
+    <h3>Phone number</h3>
+    Phone
+    <input [(ngModel)]="phone" type="text" class="form-control" />
+    <div id="phone-sign-in-recaptcha"></div>
+    <button class="btn btn-primary" (click)="phoneNumberVerification()">Send Verification</button>
+    <input [(ngModel)]="codeConfirm" type="text" class="form-control" />
+    <button class="btn btn-primary" (click)="confirmPhoneNumber()">Confirm</button>
+  </div>
 </div>
 <hr/>
-<div>
-  <h3>Register</h3>
-  Username
-  <input [(ngModel)]="email" type="text" class="form-control" /> Password
-  <input [(ngModel)]="pwd" type="text" class="form-control" />
-  <button class="btn btn-primary" (click)="register()">Register</button>
-</div>

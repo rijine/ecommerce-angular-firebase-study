@@ -33,5 +33,10 @@ service cloud.firestore {
       allow write: if true;
     }
 
+    match /activations/{email} {
+      allow read: if false;
+      allow write: if request.resource.data.code == resource.data.code && resource.data.status == 1;
+    }
+
   }
 }
