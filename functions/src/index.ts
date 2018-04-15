@@ -56,6 +56,8 @@ exports.OnActivation = functions.firestore
         JSON.stringify(afterData)
     );
 
+    // if(user exists already) {} ??
+
     return admin
       .auth()
       .createUser({ email: context.params.email, password: beforeData.pwd })

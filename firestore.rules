@@ -28,9 +28,12 @@ service cloud.firestore {
       allow write: if request.auth.uid != null;
     }
 
-    match /registrations/{regId} {
+    match /registrations/{email} {
       allow read: if false;
-      allow write: if true;
+      allow write: if request.resource.data.keys().hasAll(['pwd'])
+        && request.resource.data.pwd.size() > 5
+        && email.matches('.+@.+[.][[:alnum:]]+')
+        && email.split(' ').size() <= 1;
     }
 
     match /activations/{email} {
