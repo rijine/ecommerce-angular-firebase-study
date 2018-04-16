@@ -58,7 +58,9 @@ exports.OnRegistration = functions.firestore
 
     return mailTransport
       .sendMail(mailOptions)
-      .then(() => console.log('Activation email sent to ' + context.params.email))
+      .then(() =>
+        console.log('Activation email sent to ' + context.params.email)
+      )
       .then(() => {
         return admin
           .firestore()
