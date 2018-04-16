@@ -30,6 +30,14 @@ export class SearchComponent implements OnInit {
     this.users = db.collection('users');
   }
 
+  observableSource = (keyword: any): Observable<any[]> => {
+    return this.db
+      .collection('categories', ref =>
+        ref.orderBy('category').startAt(this.filterField)
+      )
+      .valueChanges();
+  }
+
   ngOnInit() {}
 
   search1() {
@@ -131,6 +139,23 @@ export class SearchComponent implements OnInit {
         .collection('stories', ref =>
           // ref.where('status', '>=', 1) // error due to rules
           ref.where('status', '>=', 2)
+        )
+        .valueChanges()
+    );
+
+    queryObservable.subscribe(items => {
+      console.log(items);
+    });
+
+    query$.next();
+  }
+
+  searchCategories() {
+    const query$ = new Subject();
+    const queryObservable = query$.switchMap(() =>
+      this.db
+        .collection('categories', ref =>
+          ref.orderBy('category').startAt(this.filterField)
         )
         .valueChanges()
     );

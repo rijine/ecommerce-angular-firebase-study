@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import {
   AngularFirestore,
   AngularFirestoreCollection
@@ -14,6 +15,8 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./save.component.scss']
 })
 export class SaveComponent implements OnInit {
+  categories = [];
+
   product = {
     _url: 'Procut2',
     name: 'name12',
@@ -35,14 +38,44 @@ export class SaveComponent implements OnInit {
   };
 
   private products: AngularFirestoreCollection<any>;
+  private categories$: AngularFirestoreCollection<any>;
 
-  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) {
+  constructor(
+    private db: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private http: HttpClient
+  ) {
     this.products = db.collection('products');
+    this.categories$ = db.collection('categories');
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.http.get('./assets/data/category.json').subscribe((res: any) => {
+      this.categories = res.categories;
+    });
+  }
 
   addProduct() {
     this.products.add(this.product);
+  }
+
+  addCategories() {
+    this.categories.map(category => {
+      this.categories$.add({
+        name: category.name,
+        link: category.link,
+        type: 1,
+        factory: 1
+      });
+      category.sub.map(subCategory => {
+        this.categories$.add({
+          name: subCategory,
+          link: subCategory.split(' ').join('-'),
+          type: 2,
+          category: category.name,
+          factory: 1
+        });
+      });
+    });
   }
 }

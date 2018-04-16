@@ -16,7 +16,7 @@
       <option>Desc</option>
       <option>Id</option>
     </select>
-    <input type="text" class="form-control" [(ngModel)]="filterField" placeholder="Filter"/>
+    <input type="text" class="form-control" [(ngModel)]="filterField" placeholder="Filter" />
   </div>
 
 
@@ -32,3 +32,9 @@
   <button class="btn btn-primary" (click)="search5()">Search 5</button>
   <hr/>
   <button class="btn btn-primary" (click)="searchStories()">Search Stories</button>
+  <button class="btn btn-primary" (click)="searchCategories()">Search Category</button>
+
+  <input ngui-auto-complete
+      [(ngModel)]="selected" [source]="observableSource.bind(this)"
+      list-formatter="category"
+  />
