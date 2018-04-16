@@ -14,7 +14,7 @@ const THUMB_MAX_HEIGHT = 200;
 const THUMB_MAX_WIDTH = 200;
 const THUMB_PREFIX = 'thumb_';
 const size = `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`;
-const gmailConfig = {
+const GmailConfig = {
   email: functions.config().gmail.email,
   password: functions.config().gmail.password
 };
@@ -26,8 +26,8 @@ const spawn = Spawn.spawn;
 const mailTransport = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: gmailConfig.email,
-    pass: gmailConfig.password
+    user: GmailConfig.email,
+    pass: GmailConfig.password
   }
 });
 
@@ -41,7 +41,7 @@ exports.OnRegistration = functions.firestore
     const afterData = change.after.data(); // data after the write
 
     const mailOptions: any = {
-      from: '"Spammy Corp." <noreply@firebase.com>',
+      from: '"IndiaMerch " <info@indiamerch.com>',
       to: context.params.email
     };
 

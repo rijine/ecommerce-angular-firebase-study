@@ -60,7 +60,7 @@ export class SaveComponent implements OnInit {
   }
 
   addCategories() {
-    this.categories.map(category => {
+    /* this.categories.map(category => {
       this.categories$.add({
         name: category.name,
         link: category.link,
@@ -76,6 +76,24 @@ export class SaveComponent implements OnInit {
           factory: 1
         });
       });
+    }); */
+
+    this.categories.map(category => {
+      this.db.doc('categories/' + category.name).set({
+        name: category.name,
+        link: category.link,
+        type: 1,
+        factory: 1
+      });
+      /* category.sub.map(subCategory => {
+        this.db.doc('categories/' + subCategory).set({
+          name: subCategory,
+          link: subCategory.split(' ').join('-'),
+          type: 2,
+          category: category.name,
+          factory: 1
+        });
+      }); */
     });
   }
 }

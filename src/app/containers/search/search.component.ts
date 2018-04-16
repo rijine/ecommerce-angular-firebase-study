@@ -15,6 +15,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SearchComponent implements OnInit {
   filterField = '';
+  selected = '';
 
   items: Observable<any[]>;
   userInfo: Observable<any[]>;
@@ -33,7 +34,7 @@ export class SearchComponent implements OnInit {
   observableSource = (keyword: any): Observable<any[]> => {
     return this.db
       .collection('categories', ref =>
-        ref.orderBy('category').startAt(this.filterField)
+        ref.orderBy('name').startAt(this.selected).limit(5)
       )
       .valueChanges();
   }

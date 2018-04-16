@@ -2,7 +2,7 @@
   <h3>Fetching categories</h3>
   <ul>
     <li class="text" *ngFor="let item of items | async">
-      {{item.category}} {{item.subCategory}}
+      {{item.name}} {{item.subCategory}}
     </li>
   </ul>
 </div>
@@ -36,5 +36,5 @@
 
   <input ngui-auto-complete
       [(ngModel)]="selected" [source]="observableSource.bind(this)"
-      list-formatter="category"
+      list-formatter="name"
   />
