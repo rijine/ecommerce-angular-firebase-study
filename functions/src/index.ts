@@ -7,17 +7,29 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as mkdirp from 'mkdirp-promise';
-
-// init
-admin.initializeApp();
-const gcs = Gcs();
-const spawn = Spawn.spawn;
+import * as nodemailer from 'nodemailer';
 
 // constants
 const THUMB_MAX_HEIGHT = 200;
 const THUMB_MAX_WIDTH = 200;
 const THUMB_PREFIX = 'thumb_';
 const size = `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`;
+const gmailConfig = {
+  email: functions.config().gmail.email,
+  password: functions.config().gmail.password
+};
+
+// init
+admin.initializeApp();
+const gcs = Gcs();
+const spawn = Spawn.spawn;
+const mailTransport = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: gmailConfig.email,
+    pass: gmailConfig.password
+  }
+});
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -28,18 +40,33 @@ exports.OnRegistration = functions.firestore
     const beforeData = change.before.data(); // data before the write
     const afterData = change.after.data(); // data after the write
 
+    const mailOptions: any = {
+      from: '"Spammy Corp." <noreply@firebase.com>',
+      to: context.params.email
+    };
+
     console.log(
       'Data ' +
         JSON.stringify(context.params) +
         JSON.stringify(beforeData) +
         JSON.stringify(afterData)
     );
-    return admin
-      .firestore()
-      .doc('/activations/' + context.params.email)
-      .set({ code: UUID(), status: 1, pwd: afterData.pwd })
+
+    mailOptions.subject = 'Thanks and Welcome!';
+    mailOptions.text =
+      'Thanks you for subscribing to our newsletter. You will receive our next weekly newsletter.';
+
+    return mailTransport
+      .sendMail(mailOptions)
+      .then(() => console.log('Activation email sent to ' + context.params.email))
       .then(() => {
-        console.log('Activation email sent');
+        return admin
+          .firestore()
+          .doc('/activations/' + context.params.email)
+          .set({ code: UUID(), status: 1, pwd: afterData.pwd });
+      })
+      .then(() => {
+        console.log('Activation code updated');
       });
   });
 

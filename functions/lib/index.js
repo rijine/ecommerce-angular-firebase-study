@@ -9,14 +9,27 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 const mkdirp = require("mkdirp-promise");
-// init
-admin.initializeApp();
-const gcs = Gcs();
-const spawn = Spawn.spawn;
+const nodemailer = require("nodemailer");
 // constants
 const THUMB_MAX_HEIGHT = 200;
 const THUMB_MAX_WIDTH = 200;
 const THUMB_PREFIX = 'thumb_';
+const size = `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`;
+const gmailConfig = {
+    email: functions.config().gmail.email,
+    password: functions.config().gmail.password
+};
+// init
+admin.initializeApp();
+const gcs = Gcs();
+const spawn = Spawn.spawn;
+const mailTransport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: gmailConfig.email,
+        pass: gmailConfig.password
+    }
+});
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 exports.OnRegistration = functions.firestore
@@ -24,16 +37,28 @@ exports.OnRegistration = functions.firestore
     .onWrite((change, context) => {
     const beforeData = change.before.data(); // data before the write
     const afterData = change.after.data(); // data after the write
+    const mailOptions = {
+        from: '"Spammy Corp." <noreply@firebase.com>',
+        to: context.params.email
+    };
     console.log('Data ' +
         JSON.stringify(context.params) +
         JSON.stringify(beforeData) +
         JSON.stringify(afterData));
-    return admin
-        .firestore()
-        .doc('/activations/' + context.params.email)
-        .set({ code: uuid_1.v4(), status: 1, pwd: afterData.pwd })
+    mailOptions.subject = 'Thanks and Welcome!';
+    mailOptions.text =
+        'Thanks you for subscribing to our newsletter. You will receive our next weekly newsletter.';
+    return mailTransport
+        .sendMail(mailOptions)
+        .then(() => console.log('Activation email sent to ' + context.params.email))
         .then(() => {
-        console.log('Activation email sent');
+        return admin
+            .firestore()
+            .doc('/activations/' + context.params.email)
+            .set({ code: uuid_1.v4(), status: 1, pwd: afterData.pwd });
+    })
+        .then(() => {
+        console.log('Activation code updated');
     });
 });
 exports.OnActivation = functions.firestore
@@ -45,6 +70,7 @@ exports.OnActivation = functions.firestore
         JSON.stringify(context.params) +
         JSON.stringify(beforeData) +
         JSON.stringify(afterData));
+    // if(user exists already) {} ??
     return admin
         .auth()
         .createUser({ email: context.params.email, password: beforeData.pwd })
@@ -89,7 +115,6 @@ exports.onImageUpload = functions.storage.object().onFinalize(object => {
         .then(() => {
         console.log('The file has been downloaded to', tempLocalFile);
         // Generate a thumbnail using ImageMagick.
-        const size = `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`;
         const imageMagickArgs = [
             tempLocalFile,
             '-thumbnail',
@@ -106,7 +131,9 @@ exports.onImageUpload = functions.storage.object().onFinalize(object => {
           `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`,
           tempLocalThumbFile
         ]; */
-        return spawn('convert', imageMagickArgs, { capture: ['stdout', 'stderr'] });
+        return spawn('convert', imageMagickArgs, {
+            capture: ['stdout', 'stderr']
+        });
     })
         .then(() => {
         console.log('Thumbnail created at', tempLocalThumbFile);
@@ -130,15 +157,7 @@ exports.onImageUpload = functions.storage.object().onFinalize(object => {
             thumbFile.getSignedUrl(config),
             file.getSignedUrl(config)
         ]);
-    }) /* .then((results) => {
-    console.log('Got Signed URLs.');
-    const thumbResult = results[0];
-    const originalResult = results[1];
-    const thumbFileUrl = thumbResult[0];
-    const fileUrl = originalResult[0];
-    // Add the URLs to the Database
-    return admin.database().ref('images').push({path: fileUrl, thumbnail: thumbFileUrl});
-  }) */
-        .then(() => console.log('Thumbnail URLs saved to database.'));
+    })
+        .then(() => console.log('Thumbnail Created'));
 });
 //# sourceMappingURL=index.js.map
