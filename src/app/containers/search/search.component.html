@@ -34,7 +34,16 @@
   <button class="btn btn-primary" (click)="searchStories()">Search Stories</button>
   <button class="btn btn-primary" (click)="searchCategories()">Search Category</button>
 
-  <input ngui-auto-complete
-      [(ngModel)]="selected" [source]="observableSource.bind(this)"
-      list-formatter="name"
-  />
+  <input ngui-auto-complete [(ngModel)]="selected" [source]="observableSource.bind(this)" list-formatter="name" />
+
+  <div class="content" appscrollable appScrollable (scrollPosition)="scrollHandler($event)">
+
+    <div *ngFor="let entry of dataService.data | async">
+      <h1>{{ entry.name }}</h1>
+    </div>
+
+    <p *ngIf="dataService.done | async">Nothing Here</p>
+    <div *ngIf="dataService.loading | async">Loading</div>
+  </div>
+
+  <button class="btn btn-primary" (click)="loadMoreCategories()">Load More >></button>

@@ -20,7 +20,8 @@ import { SearchComponent } from './containers/search/search.component';
 import { UploadsComponent } from './containers/uploads/uploads.component';
 import { SecurityComponent } from './containers/security/security.component';
 import { SaveComponent } from './containers/save/save.component';
-
+import { ScrollableDirective } from './scrollable.directive';
+import { DataService } from './data.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +29,8 @@ import { SaveComponent } from './containers/save/save.component';
     SearchComponent,
     UploadsComponent,
     SecurityComponent,
-    SaveComponent
+    SaveComponent,
+    ScrollableDirective
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import { SaveComponent } from './containers/save/save.component';
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule // imports firebase/storage only needed for storage features
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

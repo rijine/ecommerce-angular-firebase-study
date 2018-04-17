@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Subject } from 'rxjs/Subject';
+import { DataService } from '../../data.service';
 
 @Component({
   selector: 'app-search',
@@ -23,7 +24,11 @@ export class SearchComponent implements OnInit {
   private products: AngularFirestoreCollection<any>;
   private users: AngularFirestoreCollection<any>;
 
-  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) {
+  constructor(
+    private db: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    public dataService: DataService
+  ) {
     this.items = db.collection('categories').valueChanges();
     this.userInfo = db.collection('users').valueChanges();
     this.prodcutList = db.collection('products').valueChanges();
@@ -34,12 +39,31 @@ export class SearchComponent implements OnInit {
   observableSource = (keyword: any): Observable<any[]> => {
     return this.db
       .collection('categories', ref =>
-        ref.orderBy('name').startAt(this.selected).limit(5)
+        ref
+          .orderBy('name')
+          .startAt(this.selected)
+          .limit(5)
       )
       .valueChanges();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dataService.init('categories', 'name', {
+      reverse: false,
+      prepend: false
+    });
+  }
+
+  scrollHandler(e) {
+    console.log(e);
+    if (e === 'bottom') {
+      this.dataService.more();
+    }
+  }
+
+  loadMoreCategories() {
+    this.dataService.more();
+  }
 
   search1() {
     const query$ = new Subject();
