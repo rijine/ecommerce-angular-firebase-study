@@ -79,20 +79,25 @@ export class SaveComponent implements OnInit {
     }); */
 
     this.categories.map(category => {
-      this.db.doc('categories/' + category.name).set({
-        name: category.name,
-        link: category.link,
+      this.db.doc('categories/' + category.name.toLowerCase()).set({
+        name: category.name.toLowerCase(),
+        link: category.link.toLowerCase(),
         type: 1,
         factory: 1
       });
       /* category.sub.map(subCategory => {
-        this.db.doc('categories/' + subCategory).set({
-          name: subCategory,
-          link: subCategory.split(' ').join('-'),
-          type: 2,
-          category: category.name,
-          factory: 1
-        });
+        this.db
+          .doc('categories/' + subCategory.toLowerCase())
+          .set({
+            name: subCategory.toLowerCase(),
+            link: subCategory
+              .split(' ')
+              .join('-')
+              .toLowerCase(),
+            type: 2,
+            category: category.name.toLowerCase(),
+            factory: 1
+          });
       }); */
     });
   }
