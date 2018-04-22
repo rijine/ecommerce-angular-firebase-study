@@ -20,6 +20,11 @@ service cloud.firestore {
       //allow create: if true;
     }
 
+    match /countries/{id} {
+      allow list: if request.query.limit <= 10;
+      allow write: if true; //TODO false
+    }
+
     match /products/{productId} {
       // allow read: if true;
       allow list: if request.query.limit <= 10 && request.auth.uid != null;

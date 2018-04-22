@@ -16,6 +16,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SaveComponent implements OnInit {
   categories = [];
+  countries = [];
 
   product = {
     _url: 'Procut2',
@@ -53,10 +54,29 @@ export class SaveComponent implements OnInit {
     this.http.get('./assets/data/category.json').subscribe((res: any) => {
       this.categories = res.categories;
     });
+
+    this.http.get('./assets/data/countries.json').subscribe((res: any) => {
+      this.countries = res;
+    });
+
   }
 
   addProduct() {
     this.products.add(this.product);
+  }
+
+  addCountries() {
+    this.countries.map(country => {
+      console.log(country.name);
+      this.db.doc('countries/' + country.name.toLowerCase().trim()).set({
+        name: country.name.toLowerCase().trim(),
+        dialCode: country.dial_code.toLowerCase(),
+        code: country.code.toLowerCase(),
+        factory: 1
+      }).catch(() => {
+        console.log(country.name);
+      });
+    });
   }
 
   addCategories() {
@@ -85,7 +105,7 @@ export class SaveComponent implements OnInit {
         type: 1,
         factory: 1
       });
-      /* category.sub.map(subCategory => {
+      category.sub.map(subCategory => {
         this.db
           .doc('categories/' + subCategory.toLowerCase())
           .set({
@@ -98,7 +118,7 @@ export class SaveComponent implements OnInit {
             category: category.name.toLowerCase(),
             factory: 1
           });
-      }); */
+      });
     });
   }
 }

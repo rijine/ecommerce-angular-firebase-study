@@ -5,9 +5,11 @@ import {
 } from 'angularfire2/firestore';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
+/* import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/take';
+ */
+import { tap, scan, take } from 'rxjs/operators';
 
 interface QueryConfig {
   path: string;
@@ -95,26 +97,28 @@ export class DataService {
     // Map snapshot with doc ref (needed for cursor)
     return col
       .snapshotChanges()
-      .do(arr => {
-        let values = arr.map(snap => {
-          const data = snap.payload.doc.data();
-          const doc = snap.payload.doc;
-          return { ...data, doc };
-        });
+      .pipe(
+        tap(arr => {
+          let values = arr.map(snap => {
+            const data = snap.payload.doc.data();
+            const doc = snap.payload.doc;
+            return { ...data, doc };
+          });
 
-        // If prepending, reverse the batch order
-        values = this.query.prepend ? values.reverse() : values;
+          // If prepending, reverse the batch order
+          values = this.query.prepend ? values.reverse() : values;
 
-        // update source with new values, done loading
-        this._data.next(values);
-        this._loading.next(false);
+          // update source with new values, done loading
+          this._data.next(values);
+          this._loading.next(false);
 
-        // no more values, mark done
-        if (!values.length) {
-          this._done.next(true);
-        }
-      })
-      .take(1)
+          // no more values, mark done
+          if (!values.length) {
+            this._done.next(true);
+          }
+        }),
+        take(1)
+      )
       .subscribe();
   }
 }
