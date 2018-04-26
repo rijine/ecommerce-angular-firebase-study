@@ -22,6 +22,7 @@ import { SecurityComponent } from './containers/security/security.component';
 import { SaveComponent } from './containers/save/save.component';
 import { ScrollableDirective } from './scrollable.directive';
 import { DataService } from './data.service';
+import { ImageUploadComponent } from './containers/uploads/image-upload.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,8 @@ import { DataService } from './data.service';
     UploadsComponent,
     SecurityComponent,
     SaveComponent,
-    ScrollableDirective
+    ScrollableDirective,
+    ImageUploadComponent
   ],
   imports: [
     BrowserModule,

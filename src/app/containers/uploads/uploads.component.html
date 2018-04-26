@@ -8,3 +8,13 @@
 <div>
   {{downloadURL | async}}
 </div>
+
+<hr/>
+<!-- <label class="btn btn-primary">
+  <input style="visibility: hidden; display: none" type="file" /> Add Images
+</label> -->
+<app-image-upload *ngFor="let image of images; let position = index;" [position]="position" [image]="image" (imageSelected)="onImageSelection($event)" (deleteClicked)="onRemoveImage($event)"></app-image-upload>
+
+<button (click)="uploadAll()" type="button" class="btn btn-primary">
+   Upload All
+</button>
