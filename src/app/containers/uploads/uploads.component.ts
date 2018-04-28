@@ -3,7 +3,8 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  ViewChildren
+  ViewChildren,
+  QueryList
 } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 
@@ -21,7 +22,6 @@ import {
   AngularFireStorage,
   AngularFireUploadTask
 } from 'angularfire2/storage';
-import { andObservables } from '@angular/router/src/utils/collection';
 import { ImageUploadComponent } from './image-upload.component';
 
 @Component({
@@ -33,8 +33,8 @@ export class UploadsComponent implements OnInit {
   uploadPercent: Observable<number>;
   downloadURL: Observable<string>;
   task: AngularFireUploadTask;
-  images: any = [false];
-  @ViewChildren(ImageUploadComponent) uploadComponents = [];
+  images: any = [];
+  @ViewChildren('images') uploadComponents: QueryList<ImageUploadComponent>;
 
   constructor(
     private storage: AngularFireStorage,
@@ -45,21 +45,35 @@ export class UploadsComponent implements OnInit {
   ngOnInit() {}
 
   onImageSelection(event) {
-    for (const file of event.target.files) {
+    /* for (const file of event.target.files) {
       this.images = [ new ImageItem(file), ...this.images];
-    }
+    } */
   }
 
-  onRemoveImage(position) {
+  onRemoveImage(position: number) {
     this.images.splice(position, 1);
   }
 
+  addImage() {
+    this.images.push(1);
+  }
+
+  onSelectImages($event) {
+    for (const file of $event.target.files) {
+      this.images = [ file, ...this.images];
+    }
+  }
+
   uploadAll() {
-    for (const image of this.images) {
+    for (const image of this.uploadComponents.toArray()) {
+      image.upload();
+    }
+
+    /* for (const image of this.images) {
       if (image) {
         image.upload(this.storage);
       }
-    }
+    } */
     // this.uploadComponents[0].hide();
     /* const tasks: Observable<any>[] = [];
     for (const image of this.images) {

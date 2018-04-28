@@ -40,12 +40,14 @@ export class SearchComponent implements OnInit {
     return this.db
       .collection('categories', ref =>
         ref
+          .where('type', '==', 'category')
+          .where('factory', '==', 1)
           .orderBy('name')
           .startAt(this.selected)
           .limit(5)
       )
       .valueChanges();
-  }
+  };
 
   ngOnInit() {
     this.dataService.init('categories', 'name', {
@@ -67,15 +69,27 @@ export class SearchComponent implements OnInit {
 
   search1() {
     const query$ = new Subject();
-    const queryObservable = query$.switchMap(() =>
-      this.db
+    const queryObservable = query$.switchMap(
+      () =>
+        this.db
+          .collection('categories', ref =>
+            ref
+              .where('category', '==', 'gems, jewellery and diamonds')
+              .where('type', '==', 'subcategory')
+              .where('factory', '==', 1)
+              .orderBy('name')
+              .startAt(this.filterField)
+              .limit(5)
+          )
+          .valueChanges()
+      /* this.db
         .collection('products', ref =>
           ref
             .where('category', '==', 'Agriculture')
             .orderBy('name')
             .startAt(this.filterField)
         )
-        .valueChanges()
+        .valueChanges() */
     );
 
     queryObservable.subscribe(items => {

@@ -13,8 +13,17 @@
 <!-- <label class="btn btn-primary">
   <input style="visibility: hidden; display: none" type="file" /> Add Images
 </label> -->
-<app-image-upload *ngFor="let image of images; let position = index;" [position]="position" [image]="image" (imageSelected)="onImageSelection($event)" (deleteClicked)="onRemoveImage($event)"></app-image-upload>
+<!-- <app-image-upload *ngFor="let image of images; let position = index;" [position]="position" [image]="image" (imageSelected)="onImageSelection($event)" (deleteClicked)="onRemoveImage($event)"></app-image-upload> -->
+<app-image-upload *ngFor="let image of images; let imageIndex = index;" #images [image]="image" [position]="imageIndex" (remove)="onRemoveImage($event)">
+</app-image-upload>
 
+<!-- <button (click)="addImage()" type="button" class="btn btn-primary">
+  Add Image
+</button> -->
+<label class="btn btn-primary">
+  <input style="display: none" type="file" multiple accept="image/*" (change)="onSelectImages($event)" /> Add Image
+</label>
 <button (click)="uploadAll()" type="button" class="btn btn-primary">
-   Upload All
+  Upload All
 </button>
+<hr/>

@@ -58,7 +58,6 @@ export class SaveComponent implements OnInit {
     this.http.get('./assets/data/countries.json').subscribe((res: any) => {
       this.countries = res;
     });
-
   }
 
   addProduct() {
@@ -68,14 +67,17 @@ export class SaveComponent implements OnInit {
   addCountries() {
     this.countries.map(country => {
       console.log(country.name);
-      this.db.doc('countries/' + country.name.toLowerCase().trim()).set({
-        name: country.name.toLowerCase().trim(),
-        dialCode: country.dial_code.toLowerCase(),
-        code: country.code.toLowerCase(),
-        factory: 1
-      }).catch(() => {
-        console.log(country.name);
-      });
+      this.db
+        .doc('countries/' + country.name.toLowerCase().trim())
+        .set({
+          name: country.name.toLowerCase().trim(),
+          dialCode: country.dial_code.toLowerCase(),
+          code: country.code.toLowerCase(),
+          factory: 1
+        })
+        .catch(() => {
+          console.log(country.name);
+        });
     });
   }
 
@@ -99,26 +101,34 @@ export class SaveComponent implements OnInit {
     }); */
 
     this.categories.map(category => {
-      this.db.doc('categories/' + category.name.toLowerCase()).set({
-        name: category.name.toLowerCase(),
-        link: category.link.toLowerCase(),
-        type: 1,
-        factory: 1
-      });
-      category.sub.map(subCategory => {
-        this.db
-          .doc('categories/' + subCategory.toLowerCase())
-          .set({
+      this.db
+        .doc('categories/' + category.name.toLowerCase())
+        .set({
+          name: category.name.toLowerCase(),
+          link: category.link.toLowerCase(),
+          type: 'category',
+          factory: 1
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      category.sub
+        .map(subCategory => {
+          console.log(subCategory);
+          this.db.doc('categories/' + subCategory.toLowerCase()).set({
             name: subCategory.toLowerCase(),
             link: subCategory
               .split(' ')
               .join('-')
               .toLowerCase(),
-            type: 2,
+            type: 'subcategory',
             category: category.name.toLowerCase(),
             factory: 1
+          }).catch(err => {
+            console.log(err);
           });
-      });
+        });
+
     });
   }
 }

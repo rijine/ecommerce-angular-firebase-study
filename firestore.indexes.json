@@ -16,6 +16,21 @@
         { "fieldPath": "name", "mode": "ASCENDING" },
         { "fieldPath": "category", "mode": "ASCENDING" }
       ]
+    },
+    {
+      "collectionId": "categories",
+      "fields": [
+        { "fieldPath": "factory", "mode": "ASCENDING" },
+        { "fieldPath": "type", "mode": "ASCENDING" },
+        { "fieldPath": "name", "mode": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionId": "categories",
+      "fields": [
+        { "fieldPath": "category", "mode": "ASCENDING" },
+        { "fieldPath": "name", "mode": "ASCENDING" }
+      ]
     }
   ]
 }
