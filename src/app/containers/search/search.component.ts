@@ -125,13 +125,15 @@ export class SearchComponent implements OnInit {
     const queryObservable = query$.switchMap(
       () =>
         this.db
-          .collection('users', ref => ref.orderBy('name').startAt('Rubber'))
+          .collection('users', ref => ref)
           .valueChanges()
-      // .where('category', '==', 'Rubber')
     );
 
-    queryObservable.subscribe(items => {
+    queryObservable.subscribe( (items => {
       console.log(items);
+      /* this.db
+          .collection('users/' , ref => ref)
+          .valueChanges(); */
     });
 
     query$.next();
