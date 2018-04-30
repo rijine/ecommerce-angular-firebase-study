@@ -122,18 +122,24 @@ export class SearchComponent implements OnInit {
 
   search3() {
     const query$ = new Subject();
-    const queryObservable = query$.switchMap(
-      () =>
-        this.db
-          .collection('users', ref => ref)
-          .valueChanges()
+    const queryObservable = query$.switchMap(() =>
+      // this.db.collection('users', ref => ref).valueChanges()
+      this.db.collection('users', ref => ref).snapshotChanges()
     );
 
-    queryObservable.subscribe( (items => {
-      console.log(items);
-      /* this.db
-          .collection('users/' , ref => ref)
-          .valueChanges(); */
+
+
+    queryObservable.subscribe((items: any) => {
+      items. map((item) => {
+        const data = item.payload.doc.data();
+        const id = item.payload.doc.id;
+        console.log({ id, ...data });
+        return { id, ...data };
+      });
+
+      // this.db
+      //     .collection('users/' , ref => ref)
+      //     .valueChanges();
     });
 
     query$.next();
