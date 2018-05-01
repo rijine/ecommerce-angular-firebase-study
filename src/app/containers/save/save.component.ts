@@ -107,7 +107,7 @@ export class SaveComponent implements OnInit {
           name: category.name.toLowerCase(),
           link: category.link.toLowerCase(),
           type: 'category',
-          factory: 1
+          factory: true
         })
         .catch(err => {
           console.log(err);
@@ -123,7 +123,7 @@ export class SaveComponent implements OnInit {
               .toLowerCase(),
             type: 'subcategory',
             category: category.name.toLowerCase(),
-            factory: 1
+            factory: true
           }).catch(err => {
             console.log(err);
           });
