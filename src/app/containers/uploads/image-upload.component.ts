@@ -12,11 +12,6 @@ import { Observable } from 'rxjs/Observable';
   template: `
     <div class="card" style="padding: 10px">
       <div class="card-body">
-        <!--<label class="btn btn-primary btn-sm">
-          <input style="display: none" type="file" accept="image/*" (change)="onSelect($event)"/>
-          Choose file
-        </label>
-        -->
         <label class="btn btn-primary btn-sm" *ngIf="!!image" (click)="onDelete()">
           Delete
         </label>
